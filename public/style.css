@@ -1,16 +1,17 @@
 /*
   style.css
-  Подключаем в <head> HTML: <link rel="stylesheet" href="public/style.css" />
+  Подключаем в <head> HTML через:
+  <link rel="stylesheet" href="public/style.css" />
 */
 
-/* Фон: картинка "обитая комната" + полупрозрачный слой */
+/* Фон: картинка "psix2.jpg" + лёгкий полупрозрачный слой */
 body {
     margin: 0;
     background:
-        /* полупрозрачный чёрный слой */
+        /* полупрозрачный чёрный слой (30% прозрачности) */
             linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
                 /* сама картинка */
-            url("public/avatars/psix2.jpg")
+            url("avatars/psix2.jpg")
             no-repeat center center / cover;
 
     color: #fff;
@@ -18,7 +19,7 @@ body {
     font-weight: 700;
     height: 100vh;
 
-    /* Плавный переход для цветовых флешей */
+    /* Плавный переход для цветовых флешей (зелёный/красный) */
     transition: background-color 0.1s ease;
 }
 
