@@ -1,5 +1,11 @@
-// 🎵 База данных песен и исполнителей
+// 🎵 База данных песен и исполнителей (пример — замените своими реальными)
 const songs = [
+  { line: "Равноудалённый треугольник без причин\n" +
+        "Постели-ка соломы\n" +
+        "На четвёрке Роум задрочил\n" +
+        "На зло маме и комсомолу", artist: "Ежемесячные" },// 1
+  { line: "Приди, Меллстрой, дай бабла мне ебло\n" +
+        "Состричь своих вшей не западло", artist: "Ежемесячные" },//2
   { line: "Ебейший выпуск — это ЧБД с Тамби и 500 ракет по Вашингтону?", artist: "Ежемесячные" },//3
   { line: "Новичок репа читает в микро за 5к Мне его Дора посоветовала семь лет назад", artist: "Ежемесячные" },//4
   { line: "Если Бога нет то кто придумал суши оступные в любой части суши?", artist: "Ежемесячные" },//5
@@ -625,46 +631,113 @@ const songs = [
         "Ну реально правда охуенно  ", artist: "Контейнер" }, //50
 ];
 
-//  Фиксированный порядок исполнителей и их соответствие кнопкам
+// Фиксированный порядок (совпадает с порядком в HTML)
 const fixedArtists = ["Алена Швец", "Ежемесячные", "Контейнер", "Pyrokinesis"];
 
-let score = 0; // Очки игрока
+// Текущий счёт, индекс, перемешанный массив
+let score = 0;
+let currentIndex = 0;
+let shuffledSongs = [];
 
+/**
+ * Алгоритм Фишера–Йетса для перемешивания массива
+ */
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+/**
+ * Запуск игры
+ */
 function startGame() {
-  let randomIndex = Math.floor(Math.random() * songs.length);
-  let currentSong = songs[randomIndex];
+  score = 0;
+  updateScoreDisplay();
 
+  shuffledSongs = shuffle([...songs]);
+  currentIndex = 0;
+
+  // Показываем игровой интерфейс (если скрыт)
+  document.querySelector(".artists").style.display = "flex";
+  document.querySelector(".song-line").style.display = "block";
+  document.getElementById("end-game-message").style.display = "none";
+
+  showNextLine();
+}
+
+/**
+ * Показ следующей строчки
+ */
+function showNextLine() {
+  if (currentIndex >= shuffledSongs.length) {
+    endGame();
+    return;
+  }
+
+  const currentSong = shuffledSongs[currentIndex];
   document.getElementById("song-text").textContent = currentSong.line;
 
-  let artistButtons = document.querySelectorAll(".artist");
-
-  // Выбираем случайный индекс для правильного ответа
-  let correctIndex = Math.floor(Math.random() * fixedArtists.length);
-
+  const artistButtons = document.querySelectorAll(".artist");
   artistButtons.forEach((button, index) => {
     let artistName = button.querySelector(".artist-name");
+    artistName.textContent = fixedArtists[index];
 
-    if (index === correctIndex) {
-      artistName.textContent = currentSong.artist; // Ставим правильный ответ в случайное место
-    } else {
-      // Берем исполнителя из фиксированного списка
-      let incorrectOptions = fixedArtists.filter(artist => artist !== currentSong.artist);
-      artistName.textContent = fixedArtists[index]; // Теперь исполнители всегда на своих местах
-    }
-
-    button.onclick = () => checkAnswer(artistName.textContent, currentSong.artist);
+    button.onclick = () => checkAnswer(fixedArtists[index], currentSong.artist);
   });
 }
 
+/**
+ * Проверка ответа
+ */
 function checkAnswer(selected, correct) {
+  const body = document.body;
   if (selected === correct) {
-    score++;
+    score += 10;
+    updateScoreDisplay();
+
+    // Добавляем класс на короткое время
+    body.classList.add("flash-correct");
+    setTimeout(() => {
+      body.classList.remove("flash-correct");
+    }, 150);
+
   } else {
-    score = Math.max(0, score - 1); // Чтоб очки не уходили в минус
+    // Неправильный ответ
+    body.classList.add("flash-wrong");
+    setTimeout(() => {
+      body.classList.remove("flash-wrong");
+    }, 150);
   }
 
-  startGame(); // Загружаем новую строчку
+  currentIndex++;
+  showNextLine();
 }
 
-startGame();
+/**
+ * Обновление счёта на экране
+ */
+function updateScoreDisplay() {
+  const scoreElement = document.getElementById("score-display");
+  if (scoreElement) {
+    scoreElement.textContent = score;
+  }
+}
 
+/**
+ * Завершаем игру
+ */
+function endGame() {
+  // Скрываем игровую часть
+  document.querySelector(".artists").style.display = "none";
+  document.querySelector(".song-line").style.display = "none";
+
+  // Показываем финальное сообщение
+  document.getElementById("end-game-message").style.display = "block";
+  document.getElementById("final-score").textContent = score;
+}
+
+// Запуск при загрузке
+startGame();

@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Музыкальная угадайка</title>
-  <link rel="stylesheet" href="public/style.css">
+
+  <!-- Пример подключения Google Fonts (нужен интернет):
+       Если без сети, удалите или используйте локальный шрифт -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap"
+          rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="public/style.css" />
 </head>
 <body>
+<!-- Счётчик очков в левом верхнем углу -->
+<div class="score-board">
+  Счёт: <span id="score-display">0</span>
+</div>
+
 <main class="game-container">
   <div class="artists">
     <div class="artist">
-      <img src="public/avatars/shvec.jpg" alt="Исполнитель 1">
-      <span class="artist-name">Исполнитель 1</span>
+      <img src="public/avatars/shvec.jpg" alt="Алена Швец" />
+      <span class="artist-name">Алена Швец</span>
     </div>
     <div class="artist">
-      <img src="public/avatars/eshe.jpg" alt="Исполнитель 2">
-      <span class="artist-name">Исполнитель 2</span>
+      <img src="public/avatars/eshe.jpg" alt="Ежемесячные" />
+      <span class="artist-name">Ежемесячные</span>
     </div>
     <div class="artist">
-      <img src="public/avatars/konteyner.jpg" alt="Исполнитель 3">
-      <span class="artist-name">Исполнитель 3</span>
+      <img src="public/avatars/konteyner.jpg" alt="Контейнер" />
+      <span class="artist-name">Контейнер</span>
     </div>
     <div class="artist">
-      <img src="public/avatars/pyrokinesis-geometriya-tmy.jpg" alt="Исполнитель 4">
-      <span class="artist-name">Исполнитель 4</span>
+      <img src="public/avatars/pyrokinesis-geometriya-tmy.jpg" alt="Pyrokinesis" />
+      <span class="artist-name">Pyrokinesis</span>
     </div>
   </div>
 
   <div class="song-line">
     <h2 class="game-title">Угадай, чья строчка</h2>
-    <p id="song-text">Здесь будет строчка из трека...</p>
+    <p id="song-text">Здесь появится строчка.</p>
+  </div>
+
+  <!-- Сообщение, которое покажем в конце игры -->
+  <div id="end-game-message" class="end-game-message" style="display: none;">
+    <h2>Игра окончена!</h2>
+    <p>Ваш итоговый счёт: <span id="final-score"></span></p>
   </div>
 </main>
 
