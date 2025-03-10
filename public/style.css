@@ -1,14 +1,13 @@
 /*
   style.css
-  Подключаем в <head> HTML через:
-  <link rel="stylesheet" href="public/style.css" />
+  Подключаем в <head> HTML: <link rel="stylesheet" href="public/style.css" />
 */
 
 /* Фон: картинка "psix2.jpg" + лёгкий полупрозрачный слой */
 body {
     margin: 0;
     background:
-        /* полупрозрачный чёрный слой (30% прозрачности) */
+        /* полупрозрачный чёрный слой */
             linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
                 /* сама картинка */
             url("avatars/psix2.jpg")
@@ -19,8 +18,17 @@ body {
     font-weight: 700;
     height: 100vh;
 
-    /* Плавный переход для цветовых флешей (зелёный/красный) */
+    /* Плавный переход для цветовых флешей */
     transition: background-color 0.1s ease;
+}
+
+/* Применяем тень ко всему тексту, который может пересекаться с фоном */
+.score-board,
+.artist-name,
+.song-line,
+.end-game-message,
+.game-title {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Добавляем тень */
 }
 
 /* Счётчик очков в левом верхнем углу */
@@ -48,9 +56,12 @@ body {
 .artists {
     display: flex;
     justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;     /* Чтобы карточки могли переноситься при узком экране */
     width: 100%;
     max-width: 800px;
     margin-bottom: 50px;
+    gap: 20px; /* Расстояние между карточками, если перенесутся */
 }
 
 /* Карточка исполнителя */
@@ -115,4 +126,38 @@ body {
 /* Красный флеш (неправильный ответ) */
 .flash-wrong {
     background-color: #a30f0f !important; /* тёмно-красный */
+}
+
+/* ====================================== */
+/*         АДАПТАЦИЯ ДЛЯ СМАРТФОНОВ      */
+/* ====================================== */
+
+@media (max-width: 600px) {
+
+    .score-board {
+        font-size: 16px;
+        top: 10px;
+        left: 10px;
+    }
+
+    .artist img {
+        width: 80px;
+        height: 80px;
+        border: 2px solid white;
+        margin-bottom: 8px;
+    }
+
+    .artist-name {
+        font-size: 14px;
+    }
+
+    .song-line {
+        font-size: 20px;
+        padding: 15px;
+    }
+
+    .end-game-message {
+        font-size: 20px;
+        padding: 15px;
+    }
 }
