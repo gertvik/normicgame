@@ -1,4 +1,4 @@
-// 🎵 База данных песен и исполнителей (пример — замените своими реальными)
+// 🎵 База данных песен и исполнителей (пример, замените своими строками)
 const songs = [
   { line: "Равноудалённый треугольник без причин\n" +
         "Постели-ка соломы\n" +
@@ -629,9 +629,10 @@ const songs = [
         "Но меня стебали, ха-ха-ха", artist: "Контейнер" },//49
   { line: "В аквапарке реально охуенно, реально охуенно\n" +
         "Ну реально правда охуенно  ", artist: "Контейнер" }, //50
+  // ... (до 200)
 ];
 
-// Фиксированный порядок (совпадает с порядком в HTML)
+// Фиксированный порядок (совпадает с порядком исполнителей на странице)
 const fixedArtists = ["Алена Швец", "Ежемесячные", "Контейнер", "Pyrokinesis"];
 
 // Текущий счёт, индекс, перемешанный массив
@@ -640,7 +641,7 @@ let currentIndex = 0;
 let shuffledSongs = [];
 
 /**
- * Алгоритм Фишера–Йетса для перемешивания массива
+ * Алгоритм Фишера–Йетса (перемешивание массива)
  */
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -657,6 +658,7 @@ function startGame() {
   score = 0;
   updateScoreDisplay();
 
+  // Перемешиваем копию песен
   shuffledSongs = shuffle([...songs]);
   currentIndex = 0;
 
@@ -665,6 +667,7 @@ function startGame() {
   document.querySelector(".song-line").style.display = "block";
   document.getElementById("end-game-message").style.display = "none";
 
+  // Показываем первую строчку
   showNextLine();
 }
 
@@ -684,7 +687,6 @@ function showNextLine() {
   artistButtons.forEach((button, index) => {
     let artistName = button.querySelector(".artist-name");
     artistName.textContent = fixedArtists[index];
-
     button.onclick = () => checkAnswer(fixedArtists[index], currentSong.artist);
   });
 }
@@ -693,22 +695,20 @@ function showNextLine() {
  * Проверка ответа
  */
 function checkAnswer(selected, correct) {
-  const body = document.body;
   if (selected === correct) {
     score += 10;
     updateScoreDisplay();
 
-    // Добавляем класс на короткое время
-    body.classList.add("flash-correct");
+    // Зелёная вспышка
+    document.body.classList.add("flash-correct");
     setTimeout(() => {
-      body.classList.remove("flash-correct");
+      document.body.classList.remove("flash-correct");
     }, 150);
-
   } else {
-    // Неправильный ответ
-    body.classList.add("flash-wrong");
+    // Красная вспышка
+    document.body.classList.add("flash-wrong");
     setTimeout(() => {
-      body.classList.remove("flash-wrong");
+      document.body.classList.remove("flash-wrong");
     }, 150);
   }
 
@@ -727,10 +727,10 @@ function updateScoreDisplay() {
 }
 
 /**
- * Завершаем игру
+ * Завершение игры
  */
 function endGame() {
-  // Скрываем игровую часть
+  // Скрываем карточки исполнителей и строку
   document.querySelector(".artists").style.display = "none";
   document.querySelector(".song-line").style.display = "none";
 

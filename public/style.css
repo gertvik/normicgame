@@ -1,34 +1,20 @@
 /*
   style.css
-  Подключаем в <head> HTML: <link rel="stylesheet" href="public/style.css" />
+  Подключаем в <head> HTML через:
+  <link rel="stylesheet" href="public/style.css" />
 */
 
-/* Фон: картинка "psix2.jpg" + лёгкий полупрозрачный слой */
+/* --- Фон: картинка + градиент --- */
 body {
     margin: 0;
     background:
-        /* полупрозрачный чёрный слой */
             linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-                /* сама картинка */
-            url("avatars/psix2.jpg")
-            no-repeat center center / cover;
+            url("avatars/psix2.jpg") no-repeat center center / cover;
 
     color: #fff;
     font-family: 'Montserrat', Arial, sans-serif;
     font-weight: 700;
     height: 100vh;
-
-    /* Плавный переход для цветовых флешей */
-    transition: background-color 0.1s ease;
-}
-
-/* Применяем тень ко всему тексту, который может пересекаться с фоном */
-.score-board,
-.artist-name,
-.song-line,
-.end-game-message,
-.game-title {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Добавляем тень */
 }
 
 /* Счётчик очков в левом верхнем углу */
@@ -38,10 +24,19 @@ body {
     left: 20px;
     font-size: 18px;
     font-weight: 700;
-    z-index: 999; /* чтобы счётчик был поверх */
+    z-index: 999;
 }
 
-/* Основной контейнер (центрируем контент по вертикали/горизонтали) */
+/* Тени для улучшенной читаемости на светлом фоне */
+.score-board,
+.artist-name,
+.song-line,
+.end-game-message,
+.game-title {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Основной контейнер (центрируем контент) */
 .game-container {
     display: flex;
     flex-direction: column;
@@ -52,16 +47,16 @@ body {
     margin: 0 auto;
 }
 
-/* Контейнер для исполнителей */
+/* Контейнер исполнителей */
 .artists {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    flex-wrap: wrap;     /* Чтобы карточки могли переноситься при узком экране */
+    flex-wrap: wrap;
     width: 100%;
     max-width: 800px;
     margin-bottom: 50px;
-    gap: 20px; /* Расстояние между карточками, если перенесутся */
+    gap: 20px;
 }
 
 /* Карточка исполнителя */
@@ -104,7 +99,7 @@ body {
     width: 100%;
 }
 
-/* Сообщение, которое показывается в конце игры */
+/* Сообщение об окончании игры */
 .end-game-message {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 20px 30px;
@@ -116,16 +111,34 @@ body {
     margin-top: 30px;
 }
 
-/* ===== Цветовые флеши при ответе ===== */
+/* ======================= */
+/*    Вспышки (оверлей)    */
+/* ======================= */
 
-/* Зелёный флеш (правильный ответ) */
-.flash-correct {
-    background-color: #0f9132 !important; /* ярко-зелёный */
+/* Общий псевдоэлемент - по умолчанию прозрачный (opacity:0). */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* не блокируем клики */
+    z-index: 9999;        /* поверх всего */
+    opacity: 0;
+    transition: opacity 0.01ms ease; /* быстрый "мягкий" переход */
 }
 
-/* Красный флеш (неправильный ответ) */
-.flash-wrong {
-    background-color: #a30f0f !important; /* тёмно-красный */
+/* Правильный ответ => зелёный фон, который становится видимым */
+body.flash-correct::after {
+    background-color: #0f9132;  /* сплошной зелёный */
+    opacity: 1;
+}
+
+/* Неправильный ответ => красный фон, который становится видимым */
+body.flash-wrong::after {
+    background-color: #a30f0f;  /* сплошной красный */
+    opacity: 1;
 }
 
 /* ====================================== */
@@ -133,7 +146,6 @@ body {
 /* ====================================== */
 
 @media (max-width: 600px) {
-
     .score-board {
         font-size: 16px;
         top: 10px;
